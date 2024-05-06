@@ -1,0 +1,38 @@
+Deployment Steps for Web Scraping Application
+
+1. Deploy RabbitMQ with Helm:
+
+Use Helm to deploy RabbitMQ in the default namespace of your Kubernetes cluster.
+Store RabbitMQ credentials (username, password, host) in Google Cloud Platform (GCP) Secret Manager for secure management.
+2. Deploy Web Scraper:
+
+Deploy the web scraper in the default namespace.
+Create a GCP service account key with permissions to access Secret Manager. This service account will be used by the web scraper to fetch RabbitMQ credentials.
+Store the service account key in a ConfigMap and mount it into the web scraper pod for authentication purposes.
+3. Obtain External URL for Web Scraper:
+
+Retrieve the external IP address of the web scraper and store it in Secret Manager.
+Associate this secret with Cloud Run to establish communication between Cloud Run and the web scraper.
+4. Integrate with Elastic Cloud:
+
+Deploy Elasticsearch on Elastic Cloud and obtain the app search URI and key.
+Store these credentials in Secret Manager for secure management.
+Testing:
+
+Input a website URL into the web scraper for testing purposes.
+Monitor RabbitMQ for information related to the scraping process.
+Check logs in Elastic Cloud for both RabbitMQ startup and web scraping activities.
+Document Overview:
+
+Introduction:
+Brief overview of the purpose of the document and the deployment process.
+Deployment Steps:
+Detailed instructions for deploying RabbitMQ and the web scraper.
+Steps for storing credentials securely in GCP Secret Manager and integrating with Cloud Run and Elastic Cloud.
+Testing Procedure:
+Description of the testing scenario, including inputting a website URL and monitoring RabbitMQ and Elastic Cloud for activity.
+Conclusion:
+Summary of the deployment process and testing outcomes.
+Appendix:
+Additional resources or troubleshooting tips, if applicable.
+By following these deployment steps and testing procedures, you can ensure the successful deployment and operation of your web scraping application with RabbitMQ and Elastic Cloud integration.
