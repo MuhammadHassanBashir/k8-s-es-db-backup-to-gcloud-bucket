@@ -36,3 +36,50 @@ Summary of the deployment process and testing outcomes.
 Appendix:
 Additional resources or troubleshooting tips, if applicable.
 By following these deployment steps and testing procedures, you can ensure the successful deployment and operation of your web scraping application with RabbitMQ and Elastic Cloud integration.
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scrapper-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scrapper
+  template:
+    metadata:
+      labels:
+        app: scrapper
+    spec:
+      containers:
+      - name: scrapper
+        image: gcr.io/REPLACE_WITH_PROJECT_ID/scrapper:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+          - name: config-volume
+            mountPath: /app/service
+      volumes:
+      - name: config-volume
+        configMap:
+          name: serviceaccount
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: scrapper-service
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
+spec:
+  selector:
+    app: scrapper
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: LoadBalancer
+
